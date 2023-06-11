@@ -1,28 +1,34 @@
-function calcular(tipo, valor) { // funcao para realizar calculo
-
-    // CONDICIONAL CASO CLICK EM SIMBOLOS
-    if(tipo === 'acao') {
-        //valor da acao for C - limpar conteudo
+function calcular(tipoEntrada, valor) {
+    //CONDICIONAL CASO CLICK EM SIMBOLOS (acao)
+    const resultInput = document.querySelector("#result");
+    if(tipoEntrada === 'acao') {
+        // SE ACAO FOR == C
         if(valor === 'c') {
-            document.querySelector('#result').value = '';
+            resultInput.value = '';
         }
-        //botoes de operacao
-        if (valor === '/' || valor === '*' || valor === '-' || valor === '+' || valor === '.') {
-            document.querySelector('#result').value += valor;
+        // SE ACAO FOR OPERADORES  / * - + .
+        if(valor === '/' || valor === '*' || valor === '-' || valor === '+') {
+            //SE OPERADORES FOR REPETIDOS
+            const lastChar = resultInput.value.slice(-1);
+            if (lastChar !== '/' && lastChar !== '*' && lastChar !== '-' && lastChar !== '+') {
+                resultInput.value += valor;
+            }
         }
-        //botao para resultado
+        // VERIFICA SE JA HÁ PONTOS
+        if(valor === '.') {
+            const expression = resultInput.value;
+            if(!expression.includes('.')) {
+                resultInput.value += valor;
+            }
+        }
+        //FAZER CALCULO INSERIDO
         if(valor === '=') {
-            const calc = (eval(document.querySelector('#result').value));
-            document.querySelector('#result').value = calc;
-        }
-    
+            resultInput.value = eval(resultInput.value);
+        }  
     }
-    //CONDICIONAL CASO CLICK EM NUEMROS
-    else if(tipo === 'valor') {
-        document.querySelector('#result').value += valor;
-        //se o valor for numerico
-        if(valor === '0') {
-            document.querySelector('#result').value = '';
-        }
+
+    //CONDICIONAL CASO CLICK EM NUMEROS (valor)
+    else if(tipoEntrada === 'valor') {
+        resultInput.value += valor;  
     }
 }
